@@ -27,8 +27,8 @@ composer require ion-bazan/phpunit-extras
 
 ## Features
 
-|      Feature     |  Status |  Java Equivalent |
-|:----------------:|:-------:|:----------------:|
+| Feature          | Status  | Java Equivalent  |
+|------------------|---------|------------------|
 | `#[Mock]`        | Done    | `@Mock`          |
 | `#[InjectMocks]` | Done    | `@InjectMocks`   |
 | `#[Captor]`      | Done    | `ArgumentCaptor` |
@@ -72,7 +72,7 @@ class OrderServiceTest extends TestCase
 
 ### 2. Manual Processing (for fine control) TBD
 
-### #[Captor] – Capture Method Arguments
+### `#[Captor]` – Capture Method Arguments
 
 ```php
 #[Captor] 
