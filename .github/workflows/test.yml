@@ -1,0 +1,38 @@
+name: Tests
+on: [push, pull_request]
+jobs:
+  php:
+    name: PHP ${{ matrix.php-versions }} (${{ matrix.dependencies }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dependencies: [highest]
+        php-versions:
+          - '8.1'
+          - '8.2'
+          - '8.3'
+          - '8.4'
+          - '8.5'
+        include:
+          - php-versions: '8.1'
+            dependencies: 'lowest'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: json
+          coverage: xdebug
+      - name: Install Composer dependencies (${{ matrix.dependencies }})
+        uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
+      - name: Run Tests
+        run: vendor/bin/phpunit --coverage-clover coverage.xml --coverage-text
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

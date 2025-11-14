@@ -1,0 +1,26 @@
+{
+    "name": "ion-bazan/phpunit-extras",
+    "type": "library",
+    "description": "Java-style test automation for PHPUnit - using PHP 8.1+ attributes",
+    "authors": [
+        {
+            "name": "Ion Bazan",
+            "email": "ion.bazan@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "phpunit/phpunit": "^10 || ^11 || ^12"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "IonBazan\\PHPUnitExtras\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "IonBazan\\PHPUnitExtras\\Tests\\": "tests"
+        }
+    }
+}
