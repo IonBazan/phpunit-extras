@@ -6,6 +6,9 @@ namespace IonBazan\PHPUnitExtras\Helpers;
 
 use ReflectionClass;
 
+/**
+ * @internal
+ */
 final class SubjectFactory
 {
     /**

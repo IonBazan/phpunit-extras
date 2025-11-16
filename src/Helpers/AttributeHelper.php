@@ -7,6 +7,9 @@ namespace IonBazan\PHPUnitExtras\Helpers;
 use ReflectionClass;
 use ReflectionProperty;
 
+/**
+ * @internal
+ */
 final class AttributeHelper
 {
     /**
