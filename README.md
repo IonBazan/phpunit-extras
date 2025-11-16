@@ -12,9 +12,14 @@
 Write **cleaner, declarative, and expressive** unit tests with:
 
 ```php
-#[Mock] private Logger $logger;
-#[InjectMocks] private OrderService $service;
-#[Captor] private ArgumentCaptor $message;
+#[Mock]
+private Logger $logger;
+#[Stub]
+private Payment $paymentService;
+#[InjectMocks]
+private OrderService $service;
+#[Captor]
+private ArgumentCaptor $message;
 ```
 
 Inspired by **Mockito**, **JUnit 5**, and **Spring Boot Testing**.
@@ -30,6 +35,7 @@ composer require ion-bazan/phpunit-extras
 | Feature          | Status  | Java Equivalent  |
 |------------------|---------|------------------|
 | `#[Mock]`        | Done    | `@Mock`          |
+| `#[Stub]`        | Done    | `@Mock`          |
 | `#[InjectMocks]` | Done    | `@InjectMocks`   |
 | `#[Captor]`      | Done    | `ArgumentCaptor` |
 | `#[Spy]`         | Planned | `@Spy`           |
@@ -47,7 +53,7 @@ class OrderServiceTest extends TestCase
 {
     use WithExtras;
 
-    #[Mock]
+    #[Stub]
     private Payment $payment;
     #[Mock]
     private Logger $logger;

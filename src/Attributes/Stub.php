@@ -7,6 +7,6 @@ namespace IonBazan\PHPUnitExtras\Attributes;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
-final class Mock
+final class Stub
 {
 }

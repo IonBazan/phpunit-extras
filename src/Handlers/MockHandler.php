@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace IonBazan\PHPUnitExtras\Handlers;
 
 use IonBazan\PHPUnitExtras\Attributes\Mock;
+use IonBazan\PHPUnitExtras\Attributes\Stub as StubAttribute;
 use IonBazan\PHPUnitExtras\Helpers\AttributeHelper;
 use IonBazan\PHPUnitExtras\Helpers\MockFactory;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionIntersectionType;
@@ -22,6 +24,10 @@ final class MockHandler implements Handler
         foreach (AttributeHelper::findPropertiesWithAttribute($reflection, Mock::class) as $property) {
             $this->handleProperty($test, $property);
         }
+
+        foreach (AttributeHelper::findPropertiesWithAttribute($reflection, StubAttribute::class) as $property) {
+            $this->handleProperty($test, $property);
+        }
     }
 
     public function handleProperty(TestCase $test, ReflectionProperty $property): void
@@ -32,7 +38,10 @@ final class MockHandler implements Handler
 
         $attr = AttributeHelper::getAttributeInstance($property, Mock::class);
         if (!$attr) {
-            return;
+            $attr = AttributeHelper::getAttributeInstance($property, StubAttribute::class);
+            if (!$attr) {
+                return;
+            }
         }
 
         $type = $property->getType();
@@ -45,7 +54,9 @@ final class MockHandler implements Handler
             return;
         }
 
-        $mock = MockFactory::createMock($test, $mockType, $attr->lenient);
+        $mock = ($attr instanceof Mock)
+            ? MockFactory::createMock($test, $mockType)
+            : MockFactory::createStub($test, $mockType);
 
         $property->setValue($test, $mock);
     }
@@ -74,7 +85,7 @@ final class MockHandler implements Handler
         foreach ($type->getTypes() as $t) {
             if ($t instanceof ReflectionNamedType) {
                 $name = $t->getName();
-                if ($this->isMockable($name) && $name !== MockObject::class) {
+                if ($this->isMockable($name)) {
                     return $name;
                 }
             }
@@ -100,6 +111,9 @@ final class MockHandler implements Handler
 
     private function isMockable(string $type): bool
     {
-        return (interface_exists($type) || class_exists($type)) && !is_a($type, MockObject::class, true);
+        return (interface_exists($type) || class_exists($type))
+            && !is_a($type, MockObject::class, true)
+            && !is_a($type, Stub::class, true)
+            ;
     }
 }
